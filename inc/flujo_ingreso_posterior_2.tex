@@ -1,0 +1,96 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\usepackage[dvipsnames]{xcolor}
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex', text width=4.6cm]
+
+\newcommand{\persona}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=2pt] (0, 0) -- (0.2, 0.4) -- (0.4, 0);
+    \draw[line width=2pt] (0.2, 0.4) -- (0.2, 0.8);
+    \draw[line width=2pt] (0, 0.65) -- (0.4, 0.65);
+    \draw[line width=2pt] (0.2, 1) circle (0.5em);
+  \end{tikzpicture}
+}
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}
+    \node [label = below:{Usuario}] at (0,0) {\persona{}};
+    \node [cuadro] at (3,0) {Interfaz Sensorial};
+    \node [cuadro] at (6,0) {Respaldo bluetooth};
+    \node [cuadro] at (9,0) {Controlador de puertas};
+    \node [cuadro] at (12,0) {Servidor MQTT};
+    \node [cuadro] at (15,0) {Servidor LDAP};
+    \node [cuadro] at (18,0) {Servidor de BD};
+    \node [cuadro] at (21,0) {Servidor Web};
+    \node [cuadro] at (24,0) {Registrador de huellas};
+    \node [label = below:{Encargado RRHH}] at (27,0) {\persona{}};
+    \node [label = below:{Jefe UID}] at (30,0) {\persona{}};
+    \node [label = below:{Jefe UASST}] at (33,0) {\persona{}};
+    \node [cuadro] at (36,0) {Pulsador de salida};
+    \node [cuadro] at (39,0) {Centro de datos};
+
+    \path [linea, color = Peach, align = center, auto] (0,-2.5) -> node {\small Conecta con su smartphone} (6,-2.5);
+    \path [linea, color = Peach, align = center, auto] (6,-2.9) -> node {\small Solicita código de vinculación} (0,-2.9);
+    \path [linea, color = Peach, align = center, auto] (0,-4.4) -> node {\small Ingresa código de vinculación y contraseña de apertura} (6,-4.4);
+    \path [linea, color = Peach, align = center, auto] (6,-4.9) -> node {\small Abre puerta seleccionada} (39,-4.9);
+    \path [linea, color = Peach, align = center, auto] (0,-5.5) -> node {\small Ingresa} (39,-5.5);
+
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (0,-7.1) -> node {\small Ingresa credenciales de usuario y contraseña} (21,-7.1);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (21,-7.5) -> node {\small Verifica credenciales} (15,-7.5);
+    \path [linea, color = RoyalBlue, align = center, auto] (15,-8.5) -> node {\small Responde validez} (21,-8.5);
+    \path [linea, color = RoyalBlue, align = center, auto] (21,-8.9) -> node {\small Devuelve token de sesión} (0,-8.9);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (0,-10) -> node {\small Selecciona puerta a abrir} (21,-10);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (21,-10.4) -> node {\small Envía nombre de usuario e ID de puerta} (12,-10.4);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (12,-11.5) -> node {\small Verifica relación persona-puerta} (18,-11.5);
+    \path [linea, color = RoyalBlue, align = center, auto] (12,-11.9) -> node {\small Publica ID de puerta y estado abierto} (9,-11.9);
+    \path [linea, color = RoyalBlue, align = center, auto] (12,-12.8) -> node {\small Graba acceso en la BD} (18,-12.8);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (12,-13.5) -> node {\small Notifica ID persona y puerta abierta} (21,-13.5);
+    \path [linea, color = RoyalBlue, align = center, auto] (12,-13.8) -> node {\small Publica ID de puerta y estado cerrado} (9,-13.8);
+    \path [linea, color = RoyalBlue, align = center, auto, text width=9cm] (12,-14.6) -> node {\small Notifica ID persona y puerta cerrada} (21,-14.6);
+    \path [linea, color = RoyalBlue, align = center, auto] (9,-15) -> node {\small Abre puerta seleccionada} (39,-15);
+    \path [linea, color = RoyalBlue, align = center, auto] (0,-15.7) -> node {\small Ingresa} (39,-15.7);
+
+    \path [linea, color = Brown, align = center, auto] (0,-16.9) -> node {\small Presiona botón} (36,-16.9);
+    \path [linea, color = Brown, align = center, auto] (39,-17.5) -> node {\small Sale} (0,-17.5);
+
+    \draw [dashed, line width=0.1em] (0,-1.5) -- (0,-19);
+    \draw [dashed, line width=0.1em] (3,-0.5) -- (3,-19);
+    \draw [dashed, line width=0.1em] (6,-0.5) -- (6,-19);
+    \draw [dashed, line width=0.1em] (9,-0.5) -- (9,-19);
+    \draw [dashed, line width=0.1em] (12,-0.5) -- (12,-19);
+    \draw [dashed, line width=0.1em] (15,-0.5) -- (15,-19);
+    \draw [dashed, line width=0.1em] (18,-0.5) -- (18,-19);
+    \draw [dashed, line width=0.1em] (21,-0.5) -- (21,-19);
+    \draw [dashed, line width=0.1em] (24,-0.5) -- (24,-19);
+    \draw [dashed, line width=0.1em] (27,-1.5) -- (27,-19);
+    \draw [dashed, line width=0.1em] (30,-1.5) -- (30,-19);
+    \draw [dashed, line width=0.1em] (33,-1.5) -- (33,-19);
+    \draw [dashed, line width=0.1em] (36,-0.5) -- (36,-19);
+    \draw [dashed, line width=0.1em] (39,-0.5) -- (39,-19);
+
+    \draw [dashed, line width=0.1em, color=SkyBlue] (-1,-1.4) rectangle (40,-5.9);
+    \node [color=SkyBlue] at (1.5,-1.7) {Ingreso mediante bluetooth};
+
+    \draw [dashed, line width=0.1em, color=SpringGreen] (-1,-6.1) rectangle (40,-16);
+    \node [color=SpringGreen] at (1.7,-6.4) {Ingreso mediante sistema web};
+
+    \draw [dashed, line width=0.1em, color=green] (-1,-16.2) rectangle (40,-18);
+    \node [color=green] at (-0.3,-16.4) {Salida};
+
+  \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,24 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+\usepackage{xcolor, colortbl} %------- Tablas con colores -------%
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}} %------- Columna de tabla con ancho específico -------%
+\usepackage{hhline} %------- Líneas incompletas de tabla -------%
+\usepackage{multirow}
+
+\begin{document}
+
+%\input{./tabla_trama_ethernet}
+\tiny
+\begin{tabular}{|C{1.2cm}|C{1.4cm}|C{1.2cm}|C{1.2cm}|C{1.4cm}|C{1.2cm}|C{1.2cm}|C{1.2cm}|C{1.4cm}|}
+  \hline
+  1 byte & 1 byte & 2 bytes & 4 bytes & 1 byte & 2 bytes & 1 byte & 1 byte & 2 bytes \\
+  \hline
+  Tamaño respuesta & Posición byte respuesta & Cabecera & Dirección sensor & Indentificador paquete & Tamaño paquete & Código instrucción & Código control & Suma de verificación \\
+  \hline
+  0cH & 09H & ef01H & ffffffffH & 01H & 0004H & 17H & 00H & 001cH \\
+  \hline
+\end{tabular}
+
+\end{document}

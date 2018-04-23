@@ -1,0 +1,90 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, fit, calc}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{nube} = [cloud, cloud puffs=11, text width=1.5cm, minimum height=2em, minimum width=11em, text centered, draw=black, fill=gray!10]
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+
+\newcommand{\speaker}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0.25) -- (0, 0.45) -- (0.25, 0.45) -- (0.5, 0.7) -- (0.5, 0) -- (0.25, 0.25) -- cycle;
+    \draw[line width=2pt] (0.6, 0.25) arc (-30:30:2mm);
+    \draw[line width=2pt] (0.7, 0.15) arc (-30:30:4mm);
+    \draw[line width=2pt] (0.8, 0.05) arc (-30:30:6mm);
+  \end{tikzpicture}
+}
+
+\newcommand{\zfm}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0, 0.5) -- (0.15, 0.85) -- (0.15, 0.15) -- cycle;
+    \draw[thick, fill=black] (0.05, 0) -- (0.18, 0.13) -- (0.55, 0.13) -- (0.42, 0.0) -- cycle;
+    \draw[thick, fill=black] (0.19, 0.17) -- (0.19, 0.9) -- (0.6, 0.9) -- (0.6, 0.17) -- cycle;
+    \draw[thick, fill=white] (0.28, 0.5) -- (0.25, 0.85) -- (0.52, 0.85) -- (0.55, 0.5) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\pir}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0, 0.7) -- (0.2, 0.7) -- (0.2, 0) -- cycle;
+    \draw[line width=2pt, fill=black] (0.15, 0.1) arc (-80:80:2.5mm);
+  \end{tikzpicture}
+}
+
+\newcommand{\laptop}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0.2, 0.4) -- (1.6, 0.4) -- (1.4, 0) -- cycle;
+    \draw[thick, fill=white, line width=0.5em] (0.3, 0.54) -- (0.3, 1.3) -- (1.55, 1.3) -- (1.55, 0.54) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\bd}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=0.35em] (0, 0) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.1) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.3) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.4) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.6) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (45:135:1.7em);
+  \end{tikzpicture}
+}
+
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1.5cm]
+    \node [cuadro] (A) {Raspberry Pi 3 Modelo B V1.2};
+    \node [cuadro, right=of A] (B) {Sensor de huella dactilar ZFM20};
+    \node [right = of B] (X1) {\zfm{}};
+    \node [cuadro, left=of A] (C) {Splitter POE};
+    \node [label = Dispositivo registrador de huellas, draw = gray!80, minimum height = 10em, minimum width = 35em, fit = (A)(B)(C)] (Y1) {};
+    \node [cuadro, left = of Y1] (D) {Switch POE};
+    \node [nube, left = of D] (Y2) {};
+    \node [label = right:{Cliente}, below=of Y2] (Y3) {\laptop{}};
+    \node [cuadro, above = of Y2] (E) {Micro-servicio\\de usuarios};
+    \node [above = of E, align = center] (Y4) {Base de datos\\ \bd{}};
+    \node [cuadro, right=of E] (F) {Servidor\\LDAP};
+
+    \path [linea, align = center] (B) -> node {UART} (A);
+    \path [linea] (X1) -> (B);
+    \path [linea] (C) -> (A);
+    \path [linea] (Y2) -> (D);
+    \path [linea] (D) -> (C);
+    \path [linea] (Y3) -> (Y2);
+    \path [linea] (Y2) -> (E);
+    \path [linea] (E) -> (Y4);
+    \path [linea] (E) -> (F);
+  \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,164 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=1.3cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [cuadro] (A1) {persona};
+    \node [burbuja, above = of A1] (A2) {\underline{id}};
+    \node [burbuja, left = of A2] (A3) {nombre};
+    \node [burbuja, below = of A3] (A4) {grabado};
+
+    \node [decision, above right = 1.5cm and 3.5cm of A1] (B1) {acceso};
+    \node [burbuja, above right = 1cm and 0.5cm of B1] (B2) {fecha};
+    \node [burbuja, above left = 1cm and 0.5cm of B1] (B3) {\underline{id}};
+    \node [burbuja, dashed, below left = 1cm and 0.5cm of B1] (B4) {persona};
+    \node [burbuja, dashed, below right = 1cm and 0.5cm of B1] (B5) {puerta};
+
+    \node [cuadro, below right = 1cm and 7cm of B1] (C1) {puerta};
+    \node [burbuja, above left = 2cm and 0cm of C1] (C2) {\underline{id}};
+    \node [burbuja, right = of C2] (C3) {nombre};
+    \node [burbuja, left = of C2] (C4) {pin};
+    \node [burbuja, right = of C3] (C5) {detalle};
+    \node [burbuja, below = 1.5cm of C1] (C6) {estado inicial};
+    \node [burbuja, left = of C6] (C7) {estado actual};
+    \node [burbuja, dashed, right = of C6] (C8) {arduino control};
+
+    \node [decision, below right = 1.5cm and 3.5cm of A1] (D1) {permiso acceso};
+    \node [burbuja, above left = 1cm and 0.5cm of D1] (D2) {\underline{id}};
+    \node [burbuja, dashed, above right = 1cm and 0.5cm of D1] (D3) {persona};
+    \node [burbuja, below = of D1] (D4) {fecha inicio};
+    \node [burbuja, right = of D4] (D5) {fecha fin};
+    \node [burbuja, dashed, left = of D4] (D6) {puerta};
+
+    \node [decision, right = 3cm of C1] (E1) {se activa a través};
+
+    \node [cuadro, below = 5.5cm of E1] (F1) {arduino};
+    \node [burbuja, dashed, below right = 0.5cm and 2.5cm of F1] (F2) {cliente MQTT};
+    \node [burbuja, dashed, below = of F2] (F3) {puerta};
+    \node [burbuja, above = of F2] (F4) {pines salida};
+    \node [burbuja, above = of F4] (F5) {detalle};
+    \node [burbuja, above = of F5] (F6) {mac};
+    \node [burbuja, above = of F6] (F7) {\underline{id}};
+    \node [burbuja, above left = 0.5cm and 1.5cm of F1] (F8) {ip};
+    \node [burbuja, above = of F8] (F9) {control};
+
+    \node [decision, below = of F1] (G1) {publica};
+
+    \node [cuadro, below = of G1] (H1) {respuesta};
+    \node [burbuja, right = of H1] (H2) {\underline{id}};
+    \node [burbuja, below = of H2] (H3) {comando};
+    \node [burbuja, left = of H3] (H4) {resultado};
+    \node [burbuja, dashed, left = of H4] (H5) {arduino};
+    \node [burbuja, left = of H1] (H6) {fecha};
+
+    \node [decision, above left = 0.5cm and 4cm of H1] (I1) {se conecta mediante};
+
+    \node [cuadro, left = 2cm of I1] (J1) {cliente MQTT};
+    \node [burbuja, above = of J1] (J2) {\underline{id}};
+    \node [burbuja, below left = 1cm and 0cm of J1] (J3) {usuario};
+    \node [burbuja, below right = 1cm and 0cm of J1] (J4) {clave};
+    \node [burbuja, left = of J2] (J5) {conectado};
+    \node [burbuja, right = of J2] (J6) {admin};
+
+    \node [decision, left = 4cm of J1] (K1) {permiso suscripcion publicacion};
+    \node [burbuja, dashed, left = of K1] (K2) {\underline{topico}};
+    \node [burbuja, dashed, above = of K2] (K3) {\underline{cliente}};
+    \node [burbuja, below = of K2] (K4) {permiso};
+
+    \node [cuadro, below = 2cm of K1] (L1) {topico};
+    \node [burbuja, left = of L1] (L2) {\underline{id}};
+    \node [burbuja, right = of L1] (L3) {detalle};
+    \node [burbuja, above = 0.5cm of L3] (L4) {nombre};
+
+    \path [linea, -] (A1) -> (A2);
+    \path [linea, -] (A1) -> (A3);
+    \path [linea, -] (A1) -> (A4);
+
+    \path [linea, -] (A1.east) -> (B1.west) node [midway] {n..m};
+
+    \path [linea, -] (B1) -> (B2);
+    \path [linea, -] (B1) -> (B3);
+    \path [linea, -] (B1) -> (B4);
+    \path [linea, -] (B1) -> (B5);
+
+    \path [linea, -] (B1.east) -> (C1.west) node [midway] {n..m};
+
+    \path [linea, -] (C1) -> (C2);
+    \path [linea, -] (C1) -> (C3);
+    \path [linea, -] (C1) -> (C4);
+    \path [linea, -] (C1) -> (C5);
+    \path [linea, -] (C1) -> (C6);
+    \path [linea, -] (C1) -> (C7);
+    \path [linea, -] (C1) -> (C8);
+
+    \path [linea, -] (A1.east) -> (D1.west) node [left, midway] {n..m};
+
+    \path [linea, -] (D1) -> (D2);
+    \path [linea, -] (D1) -> (D3);
+    \path [linea, -] (D1) -> (D4);
+    \path [linea, -] (D1) -> (D5);
+    \path [linea, -] (D1) -> (D6);
+
+    \path [linea, -] (D1.east) -> (C1.west) node [midway] {n..m};
+
+    \path [linea, -] (C1) -> (E1) node [midway] {1..1};
+    \path [linea, -] (E1) -> (F1) node [midway] {1..n};
+
+    \path [linea, -] (F1) -> (F2);
+    \path [linea, -] (F1) -> (F3);
+    \path [linea, -] (F1) -> (F4);
+    \path [linea, -] (F1) -> (F5);
+    \path [linea, -] (F1) -> (F6);
+    \path [linea, -] (F1) -> (F7);
+    \path [linea, -] (F1) -> (F8);
+    \path [linea, -] (F1) -> (F9);
+
+    \path [linea, -] (F1) -> (G1) node [midway] {1..n};
+    \path [linea, -] (G1) -> (H1) node [midway] {n..1};
+
+    \path [linea, -] (H1) -> (H2);
+    \path [linea, -] (H1) -> (H3);
+    \path [linea, -] (H1) -> (H4);
+    \path [linea, -] (H1) -> (H5);
+    \path [linea, -] (H1) -> (H6);
+
+    \path [linea, -] (F1) -> (I1.east) node [midway] {1..1};
+    \path [linea, -] (I1) -> (J1) node [midway] {1..1};
+
+    \path [linea, -] (J1) -> (J2);
+    \path [linea, -] (J1) -> (J3);
+    \path [linea, -] (J1) -> (J4);
+    \path [linea, -] (J1) -> (J5);
+    \path [linea, -] (J1) -> (J6);
+
+    \path [linea, -] (J1) -> (K1) node [midway] {n..m};
+    \path [linea, -] (K1) -> (K2);
+    \path [linea, -] (K1) -> (K3);
+    \path [linea, -] (K1) -> (K4);
+    \path [linea, -] (K1) -> (L1) node [midway] {n..m};
+
+    \path [linea, -] (L1) -> (L2);
+    \path [linea, -] (L1) -> (L3);
+    \path [linea, -] (L1) -> (L4);
+  \end{tikzpicture}
+
+\end{document}

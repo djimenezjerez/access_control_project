@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=1.3cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [cuadro] (A1) {persona};
+    \node [burbuja, above = of A1] (A2) {\underline{id}};
+    \node [burbuja, left = of A2] (A3) {usuario};
+
+    \node [decision, right = of A1] (B1) {tiene};
+
+    \node [cuadro, right = of B1] (C1) {huella};
+    \node [burbuja, dashed, above = of C1] (C2) {id};
+    \node [burbuja, right = of C2] (C3) {imagen};
+    \node [burbuja, below = of C3] (C4) {plantilla};
+
+    \path [linea, -] (A1) -> (A2);
+    \path [linea, -] (A1) -> (A3);
+
+    \path [linea, -] (A1) -> (B1) node [midway] {1..1};
+
+    \path [linea, -] (B1) -> (C1) node [midway] {1..1};
+
+    \path [linea, -] (C1) -> (C2);
+    \path [linea, -] (C1) -> (C3);
+    \path [linea, -] (C1) -> (C4);
+
+  \end{tikzpicture}
+
+\end{document}

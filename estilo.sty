@@ -1,0 +1,61 @@
+\ProvidesPackage{estilo}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+\usepackage{mathptmx} %------- Letra Times New Roman -------%
+\linespread{2} %------- Doble espacio interlineado -------%
+%------- Tamaño de hoja y márgenes -------%
+\usepackage{geometry}
+\geometry{
+  letterpaper,
+  total={215.9mm,279.4mm},
+  top=40mm,
+  right=25mm,
+  bottom=25mm,
+  left=40mm
+}
+%-----------------------------------------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{tikz}
+\graphicspath{{img/}{../img/}}
+%----------------------------------------------------%
+\usepackage{pdflscape} %------- Para hojas en paisaje -------%
+\usepackage{gensymb} %------- Generador de símbolos -------%
+\usepackage{caption} %------- Referencias en figuras y cuadros -------%
+%------- Enlaces a páginas web -------%
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=false,
+  linktoc=all,
+  linkcolor=blue
+}
+%-------------------------------------%
+\usepackage[none]{hyphenat} %------- No separar palabras -------%
+\usepackage[bottom]{footmisc} %------- Pie de página siempre al borde inferior -------%
+\usepackage{float} %------- Elementos flotantes -------%
+%\setlength{\parskip}{\baselineskip} %------- Espacio entre parrafos -------%
+\setlength{\parindent}{0pt} %------- No identar al inicio de los parrafos -------%
+\usepackage[square, sort, comma, numbers]{natbib} %------- Para importar bibliografía -------%
+\usepackage{wrapfig} %------- Figuras en línea con el texto -------%
+%-------- Control de huérfanos --------%
+\widowpenalty=1000
+\clubpenalty=1000
+%--------------------------------------%
+\addto{\captionsspanish}{\renewcommand{\bibname}{Referencias}} %------- Cambio de Bibliografía a Referencias -------%
+%-------- Estilo de bibliografía y ruta específica --------%
+\newcommand{\bibliografia} {
+  \bibliographystyle{acm}
+  \bibliography{../bib/bibliografia}
+}
+%----------------------------------------------------------%
+\usepackage{enumitem} %------- Generar listas -------%
+\usepackage{colortbl} %------- Tablas con colores -------%
+\captionsetup{justification=centering} %------- Referencias de figuras y cuadros centrados -------%
+%-------- Quitar espacio antes de índices --------%
+\usepackage{tocloft}
+\setlength{\cftbeforetoctitleskip}{-1cm} %------- Índice de contenidos -------%
+\setlength{\cftbeforeloftitleskip}{-1cm} %------- Índice de figuras -------%
+\setlength{\cftbeforelottitleskip}{-1cm} %------- Índice de cuadros -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+
+\endinput

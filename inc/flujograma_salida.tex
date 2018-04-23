@@ -1,0 +1,40 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [redondeado] (A) {Inicio};
+    \node [cuadro, right = of A] (B) {Pulsa botón};
+    \node [cuadro, right = of B] (C) {Puerta abierta};
+    \node [cuadro, right = of C] (D) {Puerta cerrada};
+    \node [redondeado, right = of D] (E) {Fin};
+    \node[above = 0.5em of B] (Y1) {\includegraphics[width = 3.5em]{ingenieria_proyecto/pulsar_boton.eps}};
+    \node[above = 0.5em of C] (Y2) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_off.eps}};
+    \node[above = 0.5em of D] (Y3) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_on.eps}};
+
+    \path [linea] (A) -> (B);
+    \path [linea] (B) -> (C);
+    \path [linea] (C) -> (D);
+    \path [linea] (D) -> (E);
+  \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,58 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, fit, calc, decorations.text}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1.5cm]
+    \node [label={Interfaz sensorial 5}] at (0,0) {\includegraphics[width = 5em]{topologia/scanner.eps}};
+    \node [label={Interfaz sensorial 4}] at (0,3) {\includegraphics[width = 5em]{topologia/scanner.eps}};
+    \node [label={Interfaz sensorial 3}] at (0,6) {\includegraphics[width = 5em]{topologia/scanner.eps}};
+    \node [label={Interfaz sensorial 2}] at (0,9) {\includegraphics[width = 5em]{topologia/scanner.eps}};
+    \node [label={Interfaz sensorial 1}] at (0,12) {\includegraphics[width = 5em]{topologia/scanner.eps}};
+    \node [label={Switch POE}] at (6,6) {\includegraphics[width = 5em]{topologia/switch.eps}};
+    \node [cuadro] at (6,0) {Dispositivo de control de puertas};
+    \node [] at (9,6) {\includegraphics[width = 5em]{topologia/cloud.eps}};
+    \node [] at (9,8) {\includegraphics[width = 5em]{topologia/router.eps}};
+    \node [] at (9,8) {\includegraphics[width = 5em]{topologia/router.eps}};
+    \node [label={Servidor LDAP}] at (5,12) {\includegraphics[width = 5em]{topologia/fileserver.eps}};
+    \node [label={Servidor Web}] at (8,12) {\includegraphics[width = 5em]{topologia/microwebserver.eps}};
+    \node [label={Servidor MQTT}] at (11,12) {\includegraphics[width = 5em]{topologia/communications_server.eps}};
+    \node [label={Base de datos control accesos}] at (13,9) {\includegraphics[width = 5em]{topologia/database.eps}};
+    \node [label={Base de datos huellas}] at (13,6) {\includegraphics[width = 5em]{topologia/database.eps}};
+    \node [label=below:{Registrador de huellas}] at (13,3) {\includegraphics[width = 5em]{topologia/tablet.eps}};
+    \node [label=below:{Cliente}] at (9,3) {\includegraphics[width = 5em]{topologia/laptop.eps}};
+
+    \path [-, thick, draw] (1,0) -- (5,5);
+    \path [-, thick, draw] (1,3) -- (5,5.5);
+    \path [-, thick, draw] (1,6) -- (5,6);
+    \path [-, thick, draw] (1,9) -- (5,6.5);
+    \path [-, thick, draw] (1,12) -- (5,7);
+    \path [-, thick, draw] (6,0.7) -- (6,5);
+    \path [-, thick, draw] (6.9,6) -- (8,6);
+    \path [-, thick, draw] (9,6.6) -- (9,7.3);
+    \path [-, thick, draw] (5,10.5) -- (8,8);
+    \path [-, thick, draw] (8,11.3) -- (8.5,8.6);
+    \path [-, thick, draw] (11,11) -- (9,8.7);
+    \path [-, thick, draw] (12,9) -- (9.9,8.4);
+    \path [-, thick, draw] (12,6) -- (10,7.8);
+    \path [-, thick, draw] (12.2,3.5) -- (9.9,5.5);
+    \path [-, thick, draw] (9.2,3.7) -- (9.2,5.4);
+
+  \end{tikzpicture}
+
+\end{document}

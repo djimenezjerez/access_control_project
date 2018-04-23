@@ -1,0 +1,115 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, fit, calc, decorations.text}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{nube} = [cloud, cloud puffs=11, text width=1.5cm, minimum height=2em, minimum width=11em, text centered, draw=black, fill=gray!10]
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+
+\newcommand{\zfm}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0, 0.5) -- (0.15, 0.85) -- (0.15, 0.15) -- cycle;
+    \draw[thick, fill=black] (0.05, 0) -- (0.18, 0.13) -- (0.55, 0.13) -- (0.42, 0.0) -- cycle;
+    \draw[thick, fill=black] (0.19, 0.17) -- (0.19, 0.9) -- (0.6, 0.9) -- (0.6, 0.17) -- cycle;
+    \draw[thick, fill=white] (0.28, 0.5) -- (0.25, 0.85) -- (0.52, 0.85) -- (0.55, 0.5) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\laptop}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0.2, 0.4) -- (1.6, 0.4) -- (1.4, 0) -- cycle;
+    \draw[thick, fill=white, line width=0.5em] (0.3, 0.54) -- (0.3, 1.3) -- (1.55, 1.3) -- (1.55, 0.54) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\bd}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=0.35em] (0, 0) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.1) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.3) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.4) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.6) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (45:135:1.7em);
+  \end{tikzpicture}
+}
+
+\newcommand{\puerta}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=white, line width=0.5em] (0, 0) -- (0, 1.5) -- (1, 1.5) -- (1, 0) -- cycle;
+    \draw[thick, fill=black, line width=0.5em] (0, 0) -- (0, 1.4) -- (0.6, 1) -- (0.6, -0.5) -- cycle;
+    \draw[thick, fill=white] (0.5, 0.5) circle (0.2em);
+  \end{tikzpicture}
+}
+
+\newcommand{\persona}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=2pt] (0, 0) -- (0.2, 0.4) -- (0.4, 0);
+    \draw[line width=2pt] (0.2, 0.4) -- (0.2, 0.8);
+    \draw[line width=2pt] (0, 0.65) -- (0.4, 0.65);
+    \draw[line width=2pt] (0.2, 1) circle (0.5em);
+  \end{tikzpicture}
+}
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1.5cm]
+    \node [cuadro] (A) {Sensor biométrico};
+    \node [cuadro, right = of A] (B) {Hardware de interfaz sensorial};
+    \node [cuadro, right = of B] (C) {Servidor MQTT};
+    \node [cuadro, below = of A] (D) {Servidor Web};
+    \node [cuadro, below = of D] (E) {Servidor LDAP};
+    \node [cuadro, right = 5.75cm of E] (F) {Servidor de Base de Datos};
+    \node [cuadro, right = of C] (G) {Hardware de control de puertas};
+    \node [cuadro, below = 5.75cm of B] (H) {Hardware registrador};
+    \node [cuadro, below = 3.75cm of E] (I) {Dispositivo de salida};
+    \node [cuadro, below = of I] (J) {Hardware de Respaldo};
+    \node [cuadro, below = 3.5cm of G] (K) {Cerraduras eléctricas};
+    \node [cuadro, left = of H] (Q) {Sensor biométrico};
+
+    \path [linea] ([yshift=0.5em] A.east) -> ([yshift=0.5em] B.west);
+    \path [linea] ([yshift=-0.5em] B.west) -> ([yshift=-0.5em] A.east);
+    \path [linea] ([yshift=0.5em] B.east) -> ([yshift=0.5em] C.west);
+    \path [linea] ([yshift=-0.5em] C.west) -> ([yshift=-0.5em] B.east);
+    \path [linea] (D) -> (E);
+    \path [linea] ([yshift=0.5em] D.east) -| ([xshift=-0.5em] C.south);
+    \path [linea] (C) |- (D);
+    \path [linea] ([xshift=0.5em] C.south) -> ([xshift=0.5em] F.north);
+    \path [linea] (C) -> (G);
+    \path [linea] ([yshift=-0.5em] D.east) -| (H);
+    \path [linea] (H) -| (F);
+    \path [linea] (G) -> (K);
+    \path [linea] (I) -| ([xshift=-0.5em] K.south);
+    \path [linea] (J) -| ([xshift=0.5em] K.south);
+    \path [linea] ([yshift=0.5em] Q.east) -> ([yshift=0.5em] H.west);
+    \path [linea] ([yshift=-0.5em] H.west) -> ([yshift=-0.5em] Q.east);
+
+    \node [label = Sistema de control de accesos, draw = gray!80, minimum height = 40em, minimum width = 48em, fit = (A)(B)(C)(D)(E)(F)(G)(H)(I)(J)(K)] {};
+
+    \node [right = of K] (L) {\puerta{}};
+    \node [left = 2cm of A, label={Ingreso}] (M) {\persona{}};
+    \node [left = of D] (N) {\laptop{}};
+    \node [left = of J] (O) {\includegraphics[width=3em]{ingenieria_proyecto/activador_grabador.eps}};
+    \node [left = 2cm of I, label={Salida}] (P) {\persona{}};
+    \node [left = 2cm of Q, label={Nuevo}] (R) {\persona{}};
+
+    \path [linea] (K) -> (L);
+    \path [linea] (M) -> (A);
+    \path [linea] (N) -> (D);
+    \path [linea] (O) -> (J);
+    \path [linea] (P) -> (I);
+    \path [linea] (R) -> (Q);
+
+  \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,76 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [redondeado] (A) {Inicio};
+    \node[above = 0.5em of A] (Y1) {\includegraphics[width = 3.5em]{ingenieria_proyecto/puerta_ingreso.eps}};
+    \node [circulo, right = of A] (X1) {};
+    \node [cuadro, right = of X1] (B) {Verificar huella};
+    \node[above = 0.5em of B] (Y2) {\includegraphics[width = 2em]{ingenieria_proyecto/reconociendo_huella.eps}};
+    \node [decision, right = of B] (C) {Huella válida};
+    \node [cuadro, right = of C] (D) {Arduino publica ID de persona y puerta};
+    \node[above = 0.5em of D] (Y3) {\includegraphics[width = 2em]{ingenieria_proyecto/arduino.eps}};
+    \node [cuadro, below = of D] (E) {Servidor MQTT recibe el dato};
+    \node[right = 0.5em of E] (Y4) {\includegraphics[width = 2em]{ingenieria_proyecto/servidor.eps}};
+    \node [cuadro, below = of E] (F) {Buscar permiso de acceso};
+    \node[right = 0.5em of F] (Y5) {\includegraphics[width = 2em]{ingenieria_proyecto/base_datos.eps}};
+    \node [decision, left = of F] (G) {Tiene permiso};
+    \node [cuadro, left = of G] (H) {Registrar acceso};
+    \node[above = 0.5em of H] (Y6) {\includegraphics[width = 2em]{ingenieria_proyecto/registro.eps}};
+    \node [cuadro, left = of H] (I) {Servidor MQTT publica abrir en GPIO};
+    \node[left = 0.5em of I] (Y7) {\includegraphics[width = 2em]{ingenieria_proyecto/servidor.eps}};
+    \node [cuadro, below = of I] (J) {Arduino recibe mensaje GPIO};
+    \node[left = 0.5em of J] (Y8) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_off.eps}};
+    \node [cuadro, right = of J] (K) {Puerta abierta};
+    \node[below = 0.5em of K] (Y9) {\includegraphics[width=3em]{ingenieria_proyecto/puerta_abierta.eps}};
+    \node [cuadro, right = of K] (L) {Iniciar temporizador};
+    \node[below = 0.5em of L] (Y10) {\includegraphics[width = 2em]{ingenieria_proyecto/cronometro.eps}};
+    \node [cuadro, right = of L] (M) {Servidor MQTT publica cerrar en GPIO};
+    \node[right = 0.5em of M] (Y11) {\includegraphics[width = 2em]{ingenieria_proyecto/servidor.eps}};
+    \node [cuadro, below = of M] (N) {Arduino recibe mensaje GPIO};
+    \node[right = 0.5em of N] (Y12) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_on.eps}};
+    \node [cuadro, below = of N] (O) {Puerta cerrada};
+    \node[right = 0.5em of O] (Y13) {\includegraphics[width=3em]{ingenieria_proyecto/puerta_cerrada.eps}};
+    \node [redondeado, left = of O] (P) {Fin};
+
+    \path [linea] (A) -> (X1);
+    \path [linea] (X1) -> (B);
+    \path [linea] (B) -> (C);
+    \path [linea] (C.south) -- ++(0, -1.5em) -| node {No} (X1.south);
+    \path [linea] (C) -> node {Si} (D);
+    \path [linea] (D) -> (E);
+    \path [linea] (E) -> (F);
+    \path [linea] (F) -> (G);
+    \path [linea] (G.north) -- ++(0, 3em) -| node {No} (X1.south);
+    \path [linea] (G) -> node {Si} (H);
+    \path [linea] (H) -> (I);
+    \path [linea] (I) -> (J);
+    \path [linea] (J) -> (K);
+    \path [linea] (K) -> (L);
+    \path [linea] (L) -> (M);
+    \path [linea] (M) -> (N);
+    \path [linea] (N) -> (O);
+    \path [linea] (O) -> (P);
+  \end{tikzpicture}
+
+\end{document}

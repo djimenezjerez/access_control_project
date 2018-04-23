@@ -1,0 +1,31 @@
+\documentclass[../principal]{subfiles}
+
+\begin{document}
+\espacio
+
+  En este capítulo se muestran las conclusiones obtenidas del desarrollo y la instalación del sistema propuesto y las recomendaciones para poder realizar un mejor uso del sistema y evitar fallas o ataques.
+
+  \section{Conclusiones}
+
+  \begin{itemize}
+    \item Mediante un estudio anterior a la instalación del sistema se seleccionó el medio de transmisión, el hardware y el software para el desarrollo del sistema, posteriormente se realizó el estudio del sistema instalado con lo que se pudo verificar que la instalación del prototipo añadió mejoras al control de accesos al centro de datos, como se puede observar en las Figuras \ref{fig:flujo_ingreso_anterior} y \ref{fig:flujo_ingreso_posterior}.
+    \item Para almacenar los datos de todas las personas y los recursos necesarios para el funcionamiento del sistema, además del registro histórico de la apertura de puertas, se han desarrollado dos bases de datos como se puede observar en la Figuras \ref{fig:bd_accesos} y \ref{fig:bd_huellas}.
+    \item Se ha desarrollado un prototipo de hardware que funciona como control central de puertas y como dispositivo de interfaz sensorial; la diferencia entre estos dispositivos es el software generado por el sistema web para cada uno de los dispositivos registrados en el sistema, como se muestra en el Anexo \ref{anx:esquema_placa_poe}.
+    \item Como respaldo de apertura de puertas, se ha desarrollado un dispositivo que funciona mediante conexión Bluetooth con una aplicación para Android, este dispositivo puede controlar la apertura de hasta dos puertas y es independiente del sistema principal para evitar la falla simultánea de ambos sistemas, como se muestra en el Anexo \ref{anx:esquema_respaldo_bluetooth}.
+    \item Se han elaborado las secuencias o flujos que muestran cada acción que realiza el sistema de control de accesos para la apertura mediante sensor biométrico, pulsador al interior de cada puerta, respaldo bluetooth y también mediante el sistema web, como se muestra en las figuras \ref{fig:flujo_registrador}, \ref{fig:flujo_acceso_biometrico}, \ref{fig:flujo_pulsador}, \ref{fig:flujo_envio_huella}y  \ref{fig:flujo_respaldo_bluetooth}.
+    \item Se ha desarrollado un sistema web que cuenta con las funciones especificadas por ADSIB previas al desarrollo, entre ellas, registrar o actualizar huellas, registrar nuevos dispositivos y obtener la programas para los mismos, monitorear los accesos y obtener los registros históricos, abrir las puertas mediante botones en una pagina web, como se muestra en las Figuras \ref{fig:web_login}, \ref{fig:web_monitor}, \ref{fig:web_lista_usuarios}, \ref{fig:web_imagen_huella}, \ref{fig:web_permisos_indefinidos}, \ref{fig:web_permisos_temporales}, \ref{fig:web_clientes_mqtt}, \ref{fig:web_controladores}, \ref{fig:web_programa_control}, \ref{fig:web_sensores}, \ref{fig:web_programa_sensor}, \ref{fig:web_puertas}, \ref{fig:web_historial_accesos}, \ref{fig:web_historial_respuestas}, \ref{fig:web_usuario_normal}.
+    \item Se ha instalado el prototipo del sistema en el centro de datos de la Agencia para el Desarrollo de la Sociedad de la Información en Bolivia. Los resultados de la instalación fueron satisfactorios y aprobados por el Director Ejecutivo de ADSIB de acuerdo al Anexo \ref{anx:instalacion_piloto_documento}.
+  \end{itemize}
+
+  Por tanto habiendo cumplido los objetivos establecidos en este proyecto se ha concluido el desarrollo de un Sistema de Control de Accesos Mediante Sensor Biométrico de Huellas Dactilares y se ha demostrado su funcionamiento mediante la instalación del mismo en el Centro de datos de la Agencia Para el Desarrollo de la Sociedad de la Información en Bolivia.
+
+  \section{Recomendaciones}
+
+  \begin{itemize}
+    \item Realizar una actualización constante de todos los componentes del sistema a fin de evitar la obsolescencia por la actualización de las librerías externas de las cuales depende cada módulo del sistema que se puede hallar en el Anexo \ref{anx:repositorios_github}.
+    \item Se recomienda desarrollar un circuito intermedio entre el servidor MQTT y cada dispositivo cliente para poder cifrar/descifrar los datos y realizar la transmisión de datos con el servidor MQTT a través de una capa segura SSL con el uso de TLS.
+    \item Es recomendado que después de cada actualización en el desarrollo de este proyecto, aquellas entidades o personas que utilizan este sistema de control de accesos, migren sus datos a las nuevas versiones y mantengan actualizados sus sistemas en producción.
+    \item Se recomienda tomar en cuenta el análisis de vulnerabilidades realizado en la sección \ref{sec:analisis_vulnerabilidades} para evitar accesos no autorizados o corrupción del sistema o las bases de datos.
+  \end{itemize}
+
+\end{document}

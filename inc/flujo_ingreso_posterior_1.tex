@@ -1,0 +1,119 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\usepackage[dvipsnames]{xcolor}
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex', text width=4.6cm]
+
+\newcommand{\persona}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=2pt] (0, 0) -- (0.2, 0.4) -- (0.4, 0);
+    \draw[line width=2pt] (0.2, 0.4) -- (0.2, 0.8);
+    \draw[line width=2pt] (0, 0.65) -- (0.4, 0.65);
+    \draw[line width=2pt] (0.2, 1) circle (0.5em);
+  \end{tikzpicture}
+}
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}
+    \node [label = below:{Usuario}] at (0,0) {\persona{}};
+    \node [cuadro] at (3,0) {Interfaz Sensorial};
+    \node [cuadro] at (6,0) {Respaldo bluetooth};
+    \node [cuadro] at (9,0) {Controlador de puertas};
+    \node [cuadro] at (12,0) {Servidor MQTT};
+    \node [cuadro] at (15,0) {Servidor LDAP};
+    \node [cuadro] at (18,0) {Servidor de BD};
+    \node [cuadro] at (21,0) {Servidor Web};
+    \node [cuadro] at (24,0) {Registrador de huellas};
+    \node [label = below:{Encargado RRHH}] at (27,0) {\persona{}};
+    \node [label = below:{Jefe UID}] at (30,0) {\persona{}};
+    \node [label = below:{Jefe UASST}] at (33,0) {\persona{}};
+    \node [cuadro] at (36,0) {Pulsador de salida};
+    \node [cuadro] at (39,0) {Centro de datos};
+
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (12,-2.3) -> node {\small Establece conexión} (18,-2.3);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (3,-2.6) -> node {\small Se conecta mediante usuario y contraseña} (12,-2.6);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (12,-2.8) -> node {\small Valida credenciales} (18,-2.8);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (12,-3) -> node {\small Acepta conexión y publica comando modo búsqueda} (3,-3);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (3,-3.5) -- (4,-3.5) -- (4,-3.9) -> node {\small Activa el sensor} (3,-3.9);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (9,-3.9) -> node {\small Se conecta mediante usuario y contraseña} (12,-3.9);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (12,-4.1) -> node {\small Valida credenciales} (18,-4.1);
+    \path [linea, color = Dandelion, align = center, auto, text width=9cm] (12,-4.3) -> node {\small Acepta conexión} (9,-4.3);
+
+    \path [linea, color = BlueViolet, align = center, auto] (30,-2) -> node {\small Ordena registro de nueva huella} (27,-2);
+    \path [linea, color = brown, align = center, auto] (33,-3.5) -> node {\small Ordena registro de nueva huella} (27,-3.5);
+    \path [linea, color = OliveGreen, align = center, auto] (27,-5) -> node {\small Ingresa sus credenciales y actualiza la lista de usuarios} (21,-5);
+    \path [linea, color = OliveGreen, align = center, auto] (21,-5.3) -> node {\small Extrae la lista de usuarios} (15,-5.3);
+    \path [linea, color = OliveGreen, align = center, auto] (21,-6) -> node {\small Actualiza la lista de usuarios} (18,-6);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (21,-6.9) -> node {\small Informa actualización completada} (27,-6.9);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (27,-7.2) -> node {\small Selecciona el usuario nuevo a grabar} (21,-7.2);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (21,-8.3) -> node {\small Ejecuta POST con ID de usuario} (24,-8.3);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (24,-8.6) -- (25,-8.6) -- (25,-9) -> node {\small Activa el sensor de huellas} (24,-9);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (0,-9.7) -> node {\small Coloca su dedo en el sensor de huellas} (24,-9.7);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (24,-10) -> node {\small Responde resultado de grabación} (21,-10);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (24,-10.6) -> node {\small Actualiza huella del ID registrado} (18,-10.6);
+    \path [linea, color = OliveGreen, align = center, auto] (21,-11.6) -> node {\small Informa grabación correcta} (27,-11.6);
+    \path [linea, color = OliveGreen, align = center, auto] (27,-11.9) -> node {\small Ordena envío de la nueva huella a los sensores} (21,-11.9);
+    \path [linea, color = OliveGreen, align = center, auto] (21,-12.2) -> node {\small Envía ID de huella a grabar} (12,-12.2);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (12,-12.5) -> node {\small Publica comando modo escucha y envía huella seleccionada} (3,-12.5);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (3,-13.6) -> node {\small Recibe huella y publica respuesta del sensor} (12,-13.6);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (12,-14) -> node {\small Graba respuesta en la BD} (18,-14);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (12,-14.4) -> node {\small Publica comando modo búsqueda} (3,-14.4);
+    \path [linea, color = OliveGreen, align = center, auto, text width=9cm] (3,-14.8) -- (4,-14.8) -- (4,-15.2) -> node {\small Activa el sensor} (3,-15.2);
+    \path [linea, color = OliveGreen, align = center, auto] (27,-15.2) -> node {\small Otorga permiso temporal o indefinido a una o mas puertas} (21,-15.2);
+    \path [linea, color = OliveGreen, align = center, auto] (21,-16) -> node {\small Actualiza permisos en la BD} (18,-16);
+
+    \path [linea, color = blue, align = center, auto] (0,-18.2) -> node {\small Coloca su dedo en el sensor de huellas} (3,-18.2);
+    \path [linea, color = blue, align = center, auto] (3,-18.6) -> node {\small Publica ID de usuario y puerta} (12,-18.6);
+    \path [linea, color = blue, align = center, auto, text width=2.5cm] (12,-19) -> node {\small Busca relación persona-puerta} (18,-19);
+    \path [linea, color = blue, align = center, auto] (12,-19.4) -> node {\small Publica ID de puerta y estado abierto} (9,-19.4);
+    \path [linea, color = blue, align = center, auto] (12,-19.8) -> node {\small Graba acceso en la BD} (18,-19.8);
+    \path [linea, color = blue, align = center, auto, text width=9cm] (12,-20.5) -> node {\small Notifica ID persona y puerta abierta} (21,-20.5);
+    \path [linea, color = blue, align = center, auto] (12,-20.9) -> node {\small Publica ID de puerta y estado cerrado} (9,-20.9);
+    \path [linea, color = blue, align = center, auto, text width=9cm] (12,-21.3) -> node {\small Notifica ID persona y puerta cerrada} (21,-21.3);
+    \path [linea, color = blue, align = center, auto] (9,-21.9) -> node {\small Abre puerta seleccionada} (39,-21.9);
+    \path [linea, color = blue, align = center, auto] (0,-22.6) -> node {\small Ingresa} (39,-22.6);
+
+    \draw [dashed, line width=0.1em] (0,-1.5) -- (0,-23);
+    \draw [dashed, line width=0.1em] (3,-0.5) -- (3,-23);
+    \draw [dashed, line width=0.1em] (6,-0.5) -- (6,-23);
+    \draw [dashed, line width=0.1em] (9,-0.5) -- (9,-23);
+    \draw [dashed, line width=0.1em] (12,-0.5) -- (12,-23);
+    \draw [dashed, line width=0.1em] (15,-0.5) -- (15,-23);
+    \draw [dashed, line width=0.1em] (18,-0.5) -- (18,-23);
+    \draw [dashed, line width=0.1em] (21,-0.5) -- (21,-23);
+    \draw [dashed, line width=0.1em] (24,-0.5) -- (24,-23);
+    \draw [dashed, line width=0.1em] (27,-1.5) -- (27,-23);
+    \draw [dashed, line width=0.1em] (30,-1.5) -- (30,-23);
+    \draw [dashed, line width=0.1em] (33,-1.5) -- (33,-23);
+    \draw [dashed, line width=0.1em] (36,-0.5) -- (36,-23);
+    \draw [dashed, line width=0.1em] (39,-0.5) -- (39,-23);
+
+    \draw [dashed, line width=0.1em, color=gray] (2,-1.85) rectangle (19,-4.85);
+    \node [color=gray] at (3.4,-2) {\small Inicio del sistema};
+
+    \draw [dashed, line width=0.1em, color=LimeGreen] (26,-1.5) rectangle (31,-3);
+    \node [color=LimeGreen] at (26.7,-1.7) {Caso 1};
+    \draw [dashed, line width=0.1em, color=LimeGreen] (26,-3.1) rectangle (34,-4.6);
+    \node [color=LimeGreen] at (26.7,-3.25) {Caso 2};
+    \draw [dashed, line width=0.1em, color=LimeGreen] (-1,-1.3) rectangle (34.3,-16.6);
+    \node [color=LimeGreen] at (1.4,-1.6) {Grabación de nueva huella};
+
+    \draw [dashed, line width=0.1em, color=Tan] (-1,-16.8) rectangle (40,-22.9);
+    \node [color=Tan] at (2,-17.05) {Ingreso mediante huella dactilar};
+
+  \end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,73 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\usepackage[dvipsnames]{xcolor}
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex', text width=2.5cm]
+
+\newcommand{\persona}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=2pt] (0, 0) -- (0.2, 0.4) -- (0.4, 0);
+    \draw[line width=2pt] (0.2, 0.4) -- (0.2, 0.8);
+    \draw[line width=2pt] (0, 0.65) -- (0.4, 0.65);
+    \draw[line width=2pt] (0.2, 1) circle (0.5em);
+  \end{tikzpicture}
+}
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}
+    \node [label = below:{Usuario}] at (0,0) {\persona{}};
+    \node [label = below:{Policía}] at (3,0) {\persona{}};
+    \node [label = below:{Jefe UID}] at (6,0) {\persona{}};
+    \node [label = below:{Jefe UASST}] at (9,0) {\persona{}};
+    \node [label = below:{Encargado}] at (12,0) {\persona{}};
+    \node [cuadro] at (15,0) {Centro de datos};
+
+    \path [linea, color = BlueViolet, align = center, auto] (0,-3) -> node {\small Permiso de ingreso al edificio} (3,-3);
+    \path [linea, color = BlueViolet, align = center, auto] (3,-3.5) -> node {\small Petición de documento de identidad} (0,-3.5);
+    \path [linea, color = BlueViolet, align = center, auto] (0,-6.5) -> node {\small Entrega de identificación e ingreso al edificio} (3,-6.5);
+    \path [linea, color = brown, align = center, auto] (0,-8.5) -> node {\small Permiso de acceso al centro de datos} (6,-8.5);
+    \path [linea, color = brown, align = center, auto] (6,-9) -> node {\small Entrega llave} (12,-9);
+    \path [linea, color = BurntOrange, align = center, auto] (0,-11) -> node {\small Permiso de acceso al centro de datos} (9,-11);
+    \path [linea, color = BurntOrange, align = center, auto] (9,-11.5) -> node {\small Entrega llave} (12,-11.5);
+    \path [linea, color = Maroon, align = center, auto] (12,-12.5) -> node {\small Pide datos para llenar formulario} (0,-12.5);
+    \path [linea, color = Maroon, align = center, auto] (12,-13.5) -> node {\small Abre puerta} (15,-13.5);
+    \path [linea, color = Maroon, align = center, auto] (0,-14.5) -> node {\small Ingresa} (15,-14.5);
+    \path [linea, color = ForestGreen, align = center, auto] (0,-15.5) -> node {\small Informa la salida} (12,-15.5);
+    \path [linea, color = ForestGreen, align = center, auto] (12,-16) |- (12.5,-16) |- (12.5,-16.5) -> node {\small Anota hora de salida en formulario} (12,-16.5);
+    \path [linea, color = ForestGreen, align = center, auto] (15,-18) -> node {\small Sale} (0,-18);
+    \path [linea, color = MidnightBlue, align = center, auto] (0,-19.5) -> node {\small Petición de documentos} (3,-19.5);
+    \path [linea, color = MidnightBlue, align = center, auto] (3,-20) -> node {\small Devolución de documentos} (0,-20);
+    \path [linea, color = MidnightBlue, align = center, auto] (0,-21.5) |- (0.5,-21.5) |- (0.5,-22) -> node {\small Sale del edificio} (0,-22);
+    \path [linea, color = MidnightBlue, align = center, auto] (12,-19.5) -> node {\small Cierra la puerta} (15,-19.5);
+    \path [linea, color = MidnightBlue, align = center, auto] (12,-20.5) -> node {\small Entrega formulario} (9,-20.5);
+    \path [linea, color = MidnightBlue, align = center, auto] (12,-22) -> node {\small Entrega formulario} (6,-22);
+
+
+    \draw [dashed, line width=0.1em] (0,-1.5) -- (0,-23);
+    \draw [dashed, line width=0.1em] (3,-1.5) -- (3,-23);
+    \draw [dashed, line width=0.1em] (6,-1.5) -- (6,-23);
+    \draw [dashed, line width=0.1em] (9,-1.5) -- (9,-23);
+    \draw [dashed, line width=0.1em] (12,-1.5) -- (12,-23);
+    \draw [dashed, line width=0.1em] (15,-0.5) -- (15,-23);
+
+    \draw [dashed, line width=0.1em, color=gray] (-1,-7) rectangle (12.5,-9.3);
+    \node [color=gray] at (-0.3,-7.3) {Caso 1};
+    \draw [dashed, line width=0.1em, color=gray] (-1,-9.4) rectangle (12.5,-11.8);
+    \node [color=gray] at (-0.3,-9.7) {Caso 2};
+
+  \end{tikzpicture}
+
+\end{document}

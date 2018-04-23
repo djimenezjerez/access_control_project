@@ -1,0 +1,92 @@
+\documentclass[../principal.tex]{subfiles}
+
+\begin{document}
+\espacio
+
+  En este capítulo se muestran los antecedentes del proyecto, el planteamiento del problema que se desea solucionar, los objetivos finales del desarrollo del sistema, la justificación institucional, tecnológica y legal para desarrollar el sistema y el alcance que tiene el sistema desarrollado.
+
+  \section{Introducción}
+
+  El presente proyecto tiene como finalidad desarrollar un sistema de control de accesos que identifique a las personas por medio de sus huellas dactilares para realizar la apertura de puertas de acuerdo a los permisos otorgados a cada individuo almacenados en una base de datos, de esta manera se cubrió la necesidad de un sistema de control de accesos que permite registrar, restringir y monitorear los ingresos a los diferentes ambientes del centro de datos de la institución estatal Agencia para el Desarrollo de la Sociedad de la Información en Bolivia (ADSIB).
+
+  Los ambientes que requieren ser protegidos necesitan métodos actuales para el reconocimiento de la identidad de las personas que permitan registrar y monitorear el ingreso de personas en tiempo real; debido a la naturaleza de estos ambientes que contienen tanto elementos tangibles, es decir de un valor económico representativo, como elementos intangibles por la sensibilidad de la información, es que se cubrieron todos los aspectos posibles mencionados en estándares para este tipo de sistemas.
+
+  Durante el desarrollo del proyecto se especifican las características, las secuencias de acciones y los criterios de selección para los dispositivos que conforman el sistema, así como la instalación del mismo.
+
+  Se muestran los servicios desarrollados para el servidor y el hardware embebido, así como el proceso de instalación de los mismos, como ser el servicio de bases de datos, el servicio de mensajería para intercambio de información con el hardware, la interfaz de aplicación del backend y la aplicación web para una administración cómoda del sistema.
+
+  Se utilizó la arquitectura REST\footnote{\href{https://es.wikipedia.org/wiki/Transferencia_de_Estado_Representacional}{REpresentational State Transfer}} como proveedor de servicios, ya que conlleva muchas ventajas, entre ellas la descentralización de servicios y el enfoque actual de micro-servicios; también mejora la compatibilidad con otros sistemas, la escalabilidad y la seguridad durante el acceso a los datos.
+
+  Se utilizaron protocolos con estándares abiertos como MQTT\footnote{\href{https://en.wikipedia.org/wiki/MQTT}{MQ Telemetry Transport o Message Queue Telemetry Transport}}, uno de los protocolos de comunicación más ligeros, muy útil en la comunicación Máquina-Máquina, que mejora a sus antecesores como AMQP\footnote{\href{https://es.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol}{Advanced Message Queuing Protocol}} o XMPP\footnote{\href{https://en.wikipedia.org/wiki/XMPP}{eXtensible Messaging and Presence Protocol}}. Este protocolo es utilizado desde proyectos básicos hasta proyectos de alto calibre como el de la comunicación humano-robot que utiliza la NASA\footnote{National Aeronautics and Space Administration} para enviar órdenes desde la tierra a los robots que trabajan en el espacio.\cite{web:iot_dependencia_protocolos}
+
+  Se detallan también los recursos de hardware a utilizar y los diseños de los diagramas esquemáticos, de conexión, comunicación y secuencias de acciones del sistema. Se presentan los programas utilizados para configurar los diferentes dispositivos en función de las diferentes acciones del sistema.
+
+  Se muestran modelos de entidad-relación con los cuales se generan las bases de datos y también los estándares de los protocolos utilizados para la comunicación máquina-máquina.
+
+  El trabajo presentado contribuye al conocimiento colectivo ya que el código fuente y los esquemáticos quedarán disponibles para su uso, estudio, modificación y redistribución, gracias a la licencia de software libre LPG-Bolivia\footnote{\href{https://softwarelibre.gob.bo/documentos/LPGBolivia.pdf}{Licencia Pública General Bolivia para registro de software de código abierto}} que se encuentra reconocida legalmente en Bolivia desde el 13 de Mayo de 2014, fecha anterior a la presentación de este proyecto.
+
+  \section{Antecedentes}
+
+  Este trabajo es motivado por la necesidad de seguridad en los ambientes del centro de datos de la Agencia para el Desarrollo de la Sociedad de la Información en Bolivia (ADSIB). Debido al grado de importancia de la información que contienen los computadores de dichos ambientes es que surge este proyecto. A pesar de que en el mercado se pueden hallar sistemas similares, se ha decidido desarrollar este sistema debido a:
+  \begin{itemize}
+  \setlength\itemsep{0.1em}
+    \item El valor de un sistema en el mercado es bastante elevado con respecto al costo del desarrollo del sistema propuesto en este proyecto, como se puede observar en diferentes páginas web donde el valor de un sistema con características similares se encuentra por encima de los 3000Bs. por puerta, mientras que para el sistema propuesto se cuenta con un presupuesto promedio de 1600Bs. por puerta.\href{http://www.jmsystems.es/files/Lista%20de%20Precios%20Control%20de%20Acceso.pdf}{\footnote{ACT, Soluciones en Seguridad, Lista de precios 2017}}
+    \item Los sistemas similares comerciales presentan restricciones en cuanto a la escalabilidad de los nodos ubicados en cada punto de acceso y al número de puertas que se puede llegar a controlar, además de la compatibilidad limitada con dispositivos de otras marcas.
+    \item Debido a que la prueba piloto fué realizada en la Agencia para el Desarrollo de la Sociedad de la Información en Bolivia que es una entidad pública, esta entidad se adhiere a la Ley de Telecomunicaciones, que en sus artículos 75 a 77 hace mención al uso prioritario de Software Libre y Estándares Abiertos, por lo cual se ahonda en el esfuerzo de utilizar tecnologías de software libre y hardware libre durante el desarrollo de este proyecto.\href{http://www.wipo.int/edocs/lexdocs/laws/es/bo/bo052es.pdf}{\footnote{Ley N\degree\ 164, Ley de Telecomunicaciones, 8 de Agosto del 2011}}
+
+  \end{itemize}
+
+  \section{Planteamiento del problema}
+
+  La Agencia para el Desarrollo de la Sociedad de la Información en Bolivia precisa de un método de control de accesos mediante el cual pueda registrar, restringir y monitorear los accesos de personas a los ambientes de su centro de datos, es por este motivo que busca un método accesible mediante tecnologías de hardware y software libre para prescindir de otros tipos de accesos con un mayor grado de inseguridad como ser llaves, tarjetas magnéticas o contraseñas numéricas.
+
+  \section{Objetivos}
+
+  \subsection{Objetivo general}
+
+  \begin{itemize}
+    \setlength\itemsep{0.1em}
+
+	  \item Desarrollar un sistema de seguridad para el control de accesos mediante el uso de sensores biométricos de huellas dactilares demostrando su funcionamiento mediante la instalación del mismo en el centro de datos de la Agencia Para el Desarrollo de la Sociedad de la Información en Bolivia.
+  \end{itemize}
+
+  \subsection{Objetivos específicos}
+
+  \begin{itemize}
+    \setlength\itemsep{0.5em}
+
+    \item Evaluar el estado anterior y posterior a la instalación del sistema en el centro de datos de ADSIB.
+	  \item Desarrollar las bases de datos necesarias que almacenen la información útil para el sistema de control de accesos.
+	  \item Diseñar y programar el dispositivo de hardware para el control de puertas y el nodo sensor de huellas dactilares.
+	  \item Diseñar y programar el dispositivo de hardware para el respaldo bluetooth que se constituye como una manera adicional de apertura de emergencia en caso de producirse fallas en el sistema.
+	  \item Desarrollar las secuencias de acción que definan las diferentes maneras de apertura de las puertas en las instalaciones.
+	  \item Desarrollar una página web para la administración y el monitoreo del sistema.
+	  \item Efectuar la instalación del prototipo del sistema obtenido, en los ambientes del centro de datos de ADSIB.
+  \end{itemize}
+
+  \section{Justificación}
+
+  \subsection{Justificación tecnológica}
+
+  Este proyecto brinda un aporte de valor tecnológico por la originalidad del diseño y los medios utilizados en el desarrollo del hardware y del software para este sistema.
+
+  \subsection{Justificación institucional}
+
+  La ADSIB busca en primera instancia la opción de un sistema de control de accesos centralizado basado en hardware y software libre y al no encontrar un sistema con estas características en el mercado o entre los desarrollos en Internet abre la oportunidad para que una persona o grupo de personas puedan desarrollar un sistema de este tipo.
+
+  \subsection{Justificación legal}
+
+  Dentro de los subproyectos para la implementación del centro de datos de ADSIB surge la necesidad de establecer un método de control de accesos a las instalaciones, para la cual la ADSIB firma un convenio de cooperación interinstitucional con AGETIC\footnote{Agencia de Gobierno Electrónico y Tecnologías de Información y Comunicación}, donde AGETIC tiene entre sus obligaciones, colaborar con las tareas necesarias para coadyuvar con la implementación del centro de datos de ADSIB como se menciona en el Articulo N\degree{} 7 del Decreto Supremo 2514\footnote{\href{http://www.derechoteca.com/gacetabolivia/decreto-supremo-no-2514-del-09-de-septiembre-de-2015/}{Decreto Supremo 2514, 9 de Septiembre de 2015}}, AGETIC tiene la función de promover procesos de investigación, innovación y desarrollo en Gobierno Electrónico y Tecnologías de Información y Comunicación. De esta manera los materiales necesarios para el desarrollo de este proyecto que no se dispongan en ADSIB serán proporcionados por AGETIC gracias a este convenio interinstitucional.
+
+  \section{Alcances del proyecto}
+
+  En cuanto al hardware, el proyecto se limita al diseño de dos dispositivos de hardware, el primero funciona como un dispositivo de control central escalable para poder controlar un número muy grande de puertas y también como un dispositivo de interfaz sensorial que es instalado en cada una de las puertas, este dispositivo cuenta con alimentación de energía en el mismo cable de red mediante la tecnología de Power Over Ethernet. El segundo dispositivo es un respaldo bluetooth que sirve como método de apertura alternativa de hasta dos puertas para situaciones de emergencia o en caso de fallas del sistema.
+
+  En cuanto al software, el proyecto se limita al desarrollo de la base de datos, el desarrollo del backend en el servidor, el desarrollo del cliente web para la administración y monitoreo del sistema, la implementación de seguridad durante la etapa de conexión de los dispositivos de hardware mediante credenciales de usuario y contraseña y el diseño del software para los dispositivos de hardware desarrollados.
+
+  El alcance en cuanto a la prueba piloto del proyecto cubre cinco ambientes del centro de datos de la Agencia para el Desarrollo de la Sociedad de la Información en Bolivia.
+
+  Los alcances fueron delimitados de acuerdo a los requisitos de la ADSIB en la etapa preliminar al desarrollo del sistema.
+
+  \bibliografia
+\end{document}

@@ -1,0 +1,172 @@
+\begin{lstlisting}[label=anx:programa_respaldo_bluetooth]
+#include <SoftwareSerial.h>
+#define clave1 "1234"
+#define clave2 "4321"
+#define vcc 8
+#define key 9
+#define rx 10
+#define tx 11
+#define control1 6
+#define control2 7
+#define tiempoClave 3000
+#define tiempoApertura 10000
+#define tiempoIntentos 1800000
+#define numeroIntentos 3
+#define velocidadComunicacion 9600
+#define velocidadConfiguracion 38400
+#define comandoInicio '*'
+#define comandoFinal '#'
+bool estadoEncendido = LOW;
+byte intentos = 0;
+bool comunicacion = true;
+bool estado = false;
+String claveRecibida = "";
+unsigned long tiempoInicio;
+unsigned long tiempoFin;
+SoftwareSerial bluetooth(rx, tx);
+void modoComunicacion() {
+  digitalWrite(vcc, HIGH);
+  delay(500);
+  digitalWrite(key, HIGH);
+  Serial.println("Encendiendo el modulo HC-05");
+  bluetooth.begin(velocidadComunicacion);
+  bluetooth.flush();
+  delay(500);
+  Serial.println("Recibiendo datos:");
+  comunicacion = true;
+}
+void modoConfiguracion() {
+  digitalWrite(key, HIGH);
+  delay(2000);
+  digitalWrite(vcc, HIGH);
+  Serial.println("Encendiendo el modulo HC-05");
+  bluetooth.begin(velocidadConfiguracion);
+  bluetooth.flush();
+  delay(500);
+  Serial.println("Comandos AT:");
+  comunicacion = true;
+}
+byte recibirClave() {
+  if(intentos == numeroIntentos) {
+    tiempoInicio = millis();
+    tiempoFin = millis();
+    estado = true;
+    while((tiempoFin - tiempoInicio) < tiempoApertura) {
+      while(bluetooth.available()) {
+        bluetooth.read();
+      }
+      tiempoFin = millis();
+    }
+    estado = false;
+    intentos = 0;
+    return 0;
+  }
+  else {
+    intentos++;
+    tiempoInicio = millis();
+    tiempoFin = millis();
+    while((tiempoFin - tiempoInicio) < tiempoClave) {
+      if(bluetooth.available()) {
+        char cmd = bluetooth.read();
+        if(cmd == comandoFinal) {
+          if(claveRecibida == clave1) {
+            Serial.println("Clave correcta control 1");
+            claveRecibida = "";
+            intentos = 0;
+            return 1;
+          }
+          else if(claveRecibida == clave2) {
+            Serial.println("Clave correcta control 2");
+            claveRecibida = "";
+            intentos = 0;
+            return 2;
+          }
+          else {
+            Serial.println("Clave incorrecta");
+            claveRecibida = "";
+            return 0;
+          }
+        }
+        else {
+          claveRecibida += cmd;
+        }
+        tiempoInicio = millis();
+      }
+      tiempoFin = millis();
+    }
+    claveRecibida = "";
+    Serial.println("Intente de nuevo");
+    return 0;
+  }
+}
+void cerrar() {
+  Serial.println("Puerta cerrada");
+  digitalWrite(control1, !estadoEncendido);
+  digitalWrite(control2, !estadoEncendido);
+}
+void abrir(byte control) {
+  if(control == 1) {
+    Serial.println("Puerta 1 abierta");
+    digitalWrite(control1, estadoEncendido);
+  }
+  else if(control == 2) {
+    Serial.println("Puerta 2 abierta");
+    digitalWrite(control2, estadoEncendido);
+  }
+  estado = true;
+}
+void setup() {
+  pinMode(control1, OUTPUT);
+  pinMode(control2, OUTPUT);
+  pinMode(vcc, OUTPUT);
+  pinMode(key, OUTPUT);
+  digitalWrite(control1, HIGH);
+  digitalWrite(control2, HIGH);
+  Serial.begin(57600);
+  if(!comunicacion) {
+    modoConfiguracion();
+  }
+  else {
+    modoComunicacion();
+  }
+}
+void loop() {
+  if(estado) {
+    tiempoInicio = millis();
+    tiempoFin = millis();
+    while((tiempoFin - tiempoInicio) < tiempoApertura) {
+      while(bluetooth.available()) {
+        bluetooth.read();
+      }
+      tiempoFin = millis();
+    }
+    estado = false;
+    cerrar();
+  }
+  if(!estado && comunicacion) {
+    if(bluetooth.available()) {
+      if(bluetooth.read() == comandoInicio) {
+        byte res= recibirClave();
+        if(res == 1) {
+          abrir(1);
+        }
+        else if(res == 2) {
+          abrir(2);
+        }
+        else {
+          cerrar();
+        }
+        estado = true;
+      }
+    }
+  }
+  else if(!estado && !comunicacion) {
+    if(bluetooth.available()) {
+      Serial.write(bluetooth.read());
+    }
+    else if(Serial.available()) {
+      bluetooth.write(Serial.read());
+    }
+  }
+}
+\end{lstlisting}

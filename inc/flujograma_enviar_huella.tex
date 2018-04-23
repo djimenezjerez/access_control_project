@@ -1,0 +1,99 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=1.5cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+
+\newcommand{\laptop}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0.2, 0.4) -- (1.6, 0.4) -- (1.4, 0) -- cycle;
+    \draw[thick, fill=white, line width=0.5em] (0.3, 0.54) -- (0.3, 1.3) -- (1.55, 1.3) -- (1.55, 0.54) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\bd}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=0.35em] (0, 0) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.1) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.3) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.4) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.6) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (45:135:1.7em);
+  \end{tikzpicture}
+}
+
+\newcommand{\zfm}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0, 0.5) -- (0.15, 0.85) -- (0.15, 0.15) -- cycle;
+    \draw[thick, fill=black] (0.05, 0) -- (0.18, 0.13) -- (0.55, 0.13) -- (0.42, 0.0) -- cycle;
+    \draw[thick, fill=black] (0.19, 0.17) -- (0.19, 0.9) -- (0.6, 0.9) -- (0.6, 0.17) -- cycle;
+    \draw[thick, fill=white] (0.28, 0.5) -- (0.25, 0.85) -- (0.52, 0.85) -- (0.55, 0.5) -- cycle;
+  \end{tikzpicture}
+}
+
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [redondeado] (A) {Inicio};
+    \node [cuadro, right = of A] (B) {Ordenar envío de huella};
+    \node [cuadro, right = of B] (C) {Guardar operación en la base de datos};
+    \node [cuadro, right = of C] (D) {Publicar comando modo escucha};
+    \node [cuadro, below = of D] (E) {Cambiar a modo escucha};
+    \node [cuadro, below = of E] (F) {Extraer huella de la base de datos};
+    \node [cuadro, left = of F] (G) {Publicar ID de huella por MQTT};
+    \node [cuadro, left = of G] (H) {Publicar huella por MQTT};
+    \node [cuadro, left = of H] (I) {Recibir huella y enviarla al sensor};
+    \node [cuadro, below = of I] (J) {Grabar huella en el sensor};
+    \node [cuadro, below = of J] (K) {Publicar respuesta del sensor};
+    \node [cuadro, right = of K] (L) {Guardar respuestas en la base de datos};
+    \node [cuadro, right = of L] (M) {Publicar comando modo búsqueda};
+    \node [cuadro, right = of M] (N) {Ingresar en modo búsqueda};
+    \node [redondeado, below = of N] (O) {Fin};
+    \node [label = above:{Cliente}, above = 0.5em of B] (Y1) {\laptop{}};
+    \node [above = 0.5em of C] (Y2) {\bd{}};
+    \node [above = 0.5em of D] (Y3) {\includegraphics[width = 2em]{ingenieria_proyecto/servidor.eps}};
+    \node [right = 0.5em of E] (Y4) {\includegraphics[width = 2em]{ingenieria_proyecto/arduino.eps}};
+    \node [right = 0.5em of F] (Y5) {\bd{}};
+    \node [above = 0.5em of G] (Y6) {\includegraphics[width = 2em]{ingenieria_proyecto/registro.eps}};
+    \node [above = 0.5em of H] (Y7) {\includegraphics[width=2em]{ingenieria_proyecto/huella.eps}};
+    \node [above = 0.5em of I] (Y8) {\includegraphics[width = 2em]{ingenieria_proyecto/arduino.eps}};
+    \node [left = 0.5em of J] (Y9) {\zfm{}};
+    \node [left = 0.5em of K] (Y10) {\includegraphics[width = 2em]{ingenieria_proyecto/arduino.eps}};
+    \node [above = 0.5em of L] (Y11) {\bd{}};
+    \node [above = 0.5em of M] (Y12) {\includegraphics[width = 2em]{ingenieria_proyecto/servidor.eps}};
+    \node [above = 0.5em of N] (Y13) {\includegraphics[width = 2em]{ingenieria_proyecto/arduino.eps}};
+
+    \path [linea] (A) -> (B);
+    \path [linea] (B) -> (C);
+    \path [linea] (C) -> (D);
+    \path [linea] (D) -> (E);
+    \path [linea] (E) -> (F);
+    \path [linea] (F) -> (G);
+    \path [linea] (G) -> (H);
+    \path [linea] (H) -> (I);
+    \path [linea] (I) -> (J);
+    \path [linea] (J) -> (K);
+    \path [linea] (K) -> (L);
+    \path [linea] (L) -> (M);
+    \path [linea] (M) -> (N);
+    \path [linea] (N) -> (O);
+  \end{tikzpicture}
+
+\end{document}

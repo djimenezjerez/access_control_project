@@ -1,0 +1,100 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, fit, calc, decorations.text}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{nube} = [cloud, cloud puffs=11, text width=1.5cm, minimum height=2em, minimum width=11em, text centered, draw=black, fill=gray!10]
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+
+\newcommand{\zfm}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0, 0.5) -- (0.15, 0.85) -- (0.15, 0.15) -- cycle;
+    \draw[thick, fill=black] (0.05, 0) -- (0.18, 0.13) -- (0.55, 0.13) -- (0.42, 0.0) -- cycle;
+    \draw[thick, fill=black] (0.19, 0.17) -- (0.19, 0.9) -- (0.6, 0.9) -- (0.6, 0.17) -- cycle;
+    \draw[thick, fill=white] (0.28, 0.5) -- (0.25, 0.85) -- (0.52, 0.85) -- (0.55, 0.5) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\laptop}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=black] (0, 0) -- (0.2, 0.4) -- (1.6, 0.4) -- (1.4, 0) -- cycle;
+    \draw[thick, fill=white, line width=0.5em] (0.3, 0.54) -- (0.3, 1.3) -- (1.55, 1.3) -- (1.55, 0.54) -- cycle;
+  \end{tikzpicture}
+}
+
+\newcommand{\bd}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[line width=0.35em] (0, 0) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.1) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.3) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.4) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.6) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (-45:-135:1.7em);
+    \draw[line width=0.35em] (0, 0.7) arc (45:135:1.7em);
+  \end{tikzpicture}
+}
+
+\newcommand{\puerta}[1] {
+  \begin{tikzpicture}[#1]
+    \draw[thick, fill=white, line width=0.5em] (0, 0) -- (0, 1.5) -- (1, 1.5) -- (1, 0) -- cycle;
+    \draw[thick, fill=black, line width=0.5em] (0, 0) -- (0, 1.4) -- (0.6, 1) -- (0.6, -0.5) -- cycle;
+    \draw[thick, fill=white] (0.5, 0.5) circle (0.2em);
+  \end{tikzpicture}
+}
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1.5cm]
+    \node [cuadro] (A) {Procesamiento de datos ATMEGA328P};
+    \node [cuadro, right = of A] (B) {Sensor de huella dactilar ZFM20};
+    \node [right = of B] (X1) {\zfm{}};
+    \node [cuadro, left = of A] (C) {Conexión de red ENC28J60};
+    \node [cuadro, left = of C] (D) {Separador POE, energía y datos};
+    \node [label = Dispositivo de interfaz sensorial, draw = gray!80, minimum height = 10em, minimum width = 35em, fit = (A)(C)(D)] (Y1) {};
+    \node [cuadro, left = of Y1] (E) {Switch POE};
+    \node [nube, left = of E] (Y2) {};7
+    \node [cuadro, above = of Y2] (F) {Servidor MQTT};
+    \node [right = of F, align = center] (Y3) {Base de datos\\ \bd{}};
+    \node [label = right:{Cliente}, below=of Y2] (Y4) {\laptop{}};
+
+    \node [cuadro, below = 10em of A] (G) {Procesamiento de datos ATMEGA328P};
+    \node [cuadro, right = of G] (H) {Módulo de relés};
+    \node [right = of H] (X2) {\puerta{}};
+    \node [cuadro, left = of G] (I) {Conexión de red ENC28J60};
+    \node [cuadro, left = of I] (J) {Separador POE, energía y datos};
+    \node [label = Dispositivo de control de actuadores, draw = gray!80, minimum height = 10em, minimum width = 35em, fit = (G)(I)(J)] (Y5) {};
+
+    \path [linea, align=center] (B) -> node {UART} (A);
+    \path [linea, align=center] (A) -> (B);
+    \path [linea] (X1) -> (B);
+    \path [linea] (B) -> (X1);
+    \path [linea] (C) -> (A);
+    \path [linea] (D) -> node {Datos} (C);
+    \path [linea] (D.south) -- ++(0, -2em) -| node[pos=0.3, above] {Energía} (C.south);
+    \path [linea] (D.south) -- ++(0, -2em) -| (A.south);
+    \path [linea] (E) -> (D);
+    \path [linea] (Y2) -> (E);
+    \path [linea] (F) -> (Y2);
+    \path [linea] (F) -> (Y3);
+    \path [linea] (Y4) -> (Y2);
+    \path [linea] (E) |- (J);
+    \path [linea] (J.south) -- ++(0, -2em) -| node[pos=0.15, above] {Energía} (G.south);
+    \path [linea] (J.south) -- ++(0, -2em) -| (I.south);
+    \path [linea] (J) -- (I);
+    \path [linea] (I) -- (G);
+    \path [linea] (G) -- (H);
+    \path [linea] (H) -- (X2);
+
+  \end{tikzpicture}
+
+\end{document}

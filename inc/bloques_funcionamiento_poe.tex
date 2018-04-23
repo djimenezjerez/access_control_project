@@ -1,0 +1,68 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, fit, calc, decorations.text}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{texto} = [font=\fontsize{12pt}{10}\color{black!90}]
+\tikzstyle{cuadro} = [rectangle, text width=2.5cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1.5cm]
+    \node [cuadro] (A) {Protección de Polaridad};
+    \node [cuadro, right = of A] (B) {Clasificación de Corriente};
+    \node [cuadro, right = of B] (C) {Control};
+    \node [cuadro, right = of C] (D) {Convertidor DC/DC};
+    \node [texto, left = of A] (E) {Vi};
+    \node [texto, right = of D] (F) {Vo};
+    \node [circulo, above of = E, fill=white] (X1) {};
+    \node [circulo, above of = F, fill=white] (X2) {};
+    \node [circulo, below of = E, fill=white] (X3) {};
+    \node [circulo, below of = F, fill=white] (X4) {};
+    \node [texto, left = 0.5em of X1] {+};
+    \node [texto, right = 0.5em of X2] {+};
+    \node [texto, left = 0.5em of X3] {-};
+    \node [texto, right = 0.5em of X4] {-};
+    \node [circulo, above of = A, fill=blue!30] (Y1) {};
+    \node [circulo, above of = B, fill=blue!30] (Y2) {};
+    \node [circulo, above left = 1cm and -0.7cm of C, fill=white!30] (Y3) {};
+    \node [circulo, right of = Y3, fill=white!30] (Y4) {};
+    \node [circulo, above of = D, fill=blue!30] (Y5) {};
+    \node [circulo, below of = A, fill=blue!30] (Y6) {};
+    \node [circulo, below of = B, fill=blue!30] (Y7) {};
+    \node [circulo, below of = C, fill=blue!30] (Y8) {};
+    \node [circulo, below of = D, fill=blue!30] (Y9) {};
+  
+    \path [-, thick, draw] (X1) -- (Y1);
+    \path [-, thick, draw] (Y1) -- (Y2);
+    \path [-, thick, draw] (Y2) -- (Y3);
+    \path [-, thick, draw] (Y3) -- coordinate[midway](m) (Y4.north);
+    \path [-, thick, draw] (Y4) -- (Y5);
+    \path [-, thick, draw] (Y5) -- (X2);
+    \path [-, dashed, draw] (C) -- (m);
+    \path [-, thick, draw] (X3) -- (Y6);
+    \path [-, thick, draw] (Y6) -- (Y7);
+    \path [-, thick, draw] (Y7) -- (Y8);
+    \path [-, thick, draw] (Y8) -- (Y9);
+    \path [-, thick, draw] (Y9) -- (X4);
+    \path [-, thick, draw] (A) -- (Y1);
+    \path [-, thick, draw] (A) -- (Y6);
+    \path [-, thick, draw] (B) -- (Y2);
+    \path [-, thick, draw] (B) -- (Y7);
+    \path [-, thick, draw] (C) -- (Y8);
+    \path [-, thick, draw] (D) -- (Y5);
+    \path [-, thick, draw] (D) -- (Y9);
+  \end{tikzpicture}
+
+\end{document}

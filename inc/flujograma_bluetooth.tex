@@ -1,0 +1,55 @@
+\documentclass{standalone}
+
+\usepackage[spanish]{babel} %------- Entorno de latex en español -------%
+\usepackage[utf8]{inputenc} %------- Acentos nativos -------%
+%------- Importar gráficas de ruta específica -------%
+\usepackage{graphicx} %------- Para especificar tamaño de gráficos -------%
+\graphicspath{{../img/}}
+%----------------------------------------------------%
+%---------- Formas para diagramas de flujo ----------%
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\tikzset{font={\fontsize{11pt}{12}\selectfont}}
+\tikzstyle{redondeado} = [rectangle, rounded corners, text width=2cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=red!30]
+\tikzstyle{cuadro} = [rectangle, text width=2.3cm, minimum height=2em, minimum width=4em, text centered, draw=black, fill=cyan!20]
+\tikzstyle{inclinado} = [trapezium, trapezium left angle=70, trapezium right angle=110, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=green!30]
+\tikzstyle{decision} = [diamond, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=yellow!30]
+\tikzstyle{burbuja} = [ellipse, text width=2cm, minimum height=2em, minimum width=4em, text badly centered, draw=black, fill=brown!30]
+\tikzstyle{circulo} = [circle, text width=1mm, minimum height=1mm, minimum width=1mm, draw=black, fill=blue!30]
+\tikzstyle{linea} = [draw, line width=0.2em, -latex']
+%----------------------------------------------------%
+
+\begin{document}
+
+  \begin{tikzpicture}[auto, node distance = 1cm]
+    \node [redondeado] (A) {Inicio};
+    \node [circulo, right = of A] (X1) {};
+    \node [cuadro, right = of X1] (B) {Vincular con dispositivo Bluetooth};
+    \node[above=0.5em of B] (Y1) {\includegraphics[width=3em]{ingenieria_proyecto/activador_grabador.eps}};
+    \node [decision, right = of B] (C) {Clave de vinculación correcta};
+    \node [circulo, right = of C] (X2) {};
+    \node [inclinado, below = of X2] (D) {Introducir clave de seguridad};
+    \node [decision, below = of D] (E) {Clave de seguridad correcta};
+    \node [cuadro, left = of E] (F) {Abrir puerta};
+    \node [above = 0.5em of F] (Y2) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_off.eps}};
+    \node [cuadro, left = of F] (G) {Iniciar temporizador};
+    \node [above = 0.5em of G] (Y3) {\includegraphics[width = 2em]{ingenieria_proyecto/cronometro.eps}};
+    \node [cuadro, left = of G] (H) {Cerrar puerta};
+    \node [above = 0.5em of H] (Y4) {\includegraphics[width = 3em]{ingenieria_proyecto/switch_on.eps}};
+    \node [redondeado, below = of H] (I) {Fin};
+
+    \path [linea] (A) -> (X1);
+    \path [linea] (X1) -> (B);
+    \path [linea] (B) -> (C);
+    \path [linea] (C.south) -- ++(0, -1.5em) -| node {No} (X1.south);
+    \path [linea] (C) -> node {Si} (X2);
+    \path [linea] (X2) -> (D);
+    \path [linea] (D) -> (E);
+    \path [linea] (E.east) -- ++(1.5em, 0em) |- node {No} (X2.east);
+    \path [linea] (E) -> node {Si} (F);
+    \path [linea] (F) -> (G);
+    \path [linea] (G) -> (H);
+    \path [linea] (H) -> (I);
+  \end{tikzpicture}
+
+\end{document}
