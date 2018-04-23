@@ -1,6 +1,6 @@
 doc/
 !inc/
-!main.pdf
+*.apc
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
